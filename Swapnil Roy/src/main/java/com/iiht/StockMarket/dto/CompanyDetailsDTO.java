@@ -12,31 +12,31 @@ import org.hibernate.validator.constraints.Length;
 
 public class CompanyDetailsDTO {
 
-    @NotNull(message = "Company Code should'nt be null")
+    @NotNull(message = "should'nt be null")
     @Column(unique = true)
 	private Long companyCode;
 
-	@NotBlank(message = "StockExchange Name should'nt be blank.")
-	@Length(min = 3, max = 100,message = "StockExchange name should be minimun 3 charecters and maximum 100 characters")
+	@NotBlank(message = "should'nt be blank.")
+	@Length(min = 3, max = 100,message = "name should be minimun 3 charecters and maximum 100 characters")
 	private String stockExchange;
 
-	@NotBlank(message = "Company Name should'nt be blank.")
+	@NotBlank(message = "should'nt be blank.")
 	@Length(min = 3, max = 100,message = "Company name should be minimun 3 charecters and maximum 100 characters")
 	private String companyName;
 
-    @NotBlank(message = "Company CEO Name should'nt be blank.")
+    @NotBlank(message = "should'nt be blank.")
 	@Length(min = 5, max = 100,message = "Company CEO name should be minimun 5 charecters and maximum 100 characters")
     private String companyCEO;    
    
-    @NotNull(message = "Please enter company turnover")
+    @NotNull(message = "company turnover")
     @Column(precision = 10, scale = 2)
 	private Double turnover;
 
-	@NotEmpty(message = "Please enter BoardOfDirectors")
+	@NotEmpty(message = "BoardOfDirectors")
 	@Length(min = 5, max = 200,message = "BoardOfDirectors should be minimun 5 charecters and maximum 200 characters")
 	private String boardOfDirectors;
 
-	@NotEmpty(message = "Please enter company profile")
+	@NotEmpty(message = "company profile")
 	@Length(min = 5, max = 255,message = "Company profile should be minimun 5 charecters and maximum 255 characters")
 	private String companyProfile;
 	

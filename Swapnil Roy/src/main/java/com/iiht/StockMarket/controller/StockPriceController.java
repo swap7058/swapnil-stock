@@ -30,16 +30,13 @@ import com.iiht.StockMarket.exception.StockNotFoundException;
 import com.iiht.StockMarket.services.StockMarketService;
 
 @RestController
-@RequestMapping (value = "/stock")
+@RequestMapping (value = "/stockprice")
 public class StockPriceController {
 
 	@Autowired
 	private StockMarketService stockMarketService;
-	//-------------------------------------------------------------------------------------------------------------------------------
-	// SERVICE OPERATIONS
-	//-------------------------------------------------------------------------------------------------------------------------------
 	
-	@PostMapping(value="/addStock")																						// 2. WORKING
+	@PostMapping(value="/AddingStock")																						// 2. WORKING
 	public ResponseEntity<StockPriceDetailsDTO> addStockDetails(@Valid @RequestBody StockPriceDetailsDTO stockPriceDetailsDTO, BindingResult bindingResult) throws InvalidStockException {
 		if(bindingResult.hasErrors())
 		{
@@ -56,29 +53,29 @@ public class StockPriceController {
 	}        
         
 	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	@DeleteMapping(value = "/deleteStock/{companyCode}")																// 3. WORKING
+	
+	@DeleteMapping(value = "/deleteStockinformation/{companyCode}")																
 	public ResponseEntity<List<StockPriceDetailsDTO>> deleteStockByCompanyCode(@PathVariable Long companyCode) {
 
         if(stockMarketService.getStockByCode(companyCode)==null)
         {
-            throw new StockNotFoundException("Custom Error: No Stocks found to be deleted for the company code"+companyCode);
+            throw new StockNotFoundException("No Stocks found to be deleted for the company code"+companyCode);
         }
 
 
 		return new ResponseEntity<List<StockPriceDetailsDTO>>(stockMarketService.deleteStock(companyCode),HttpStatus.OK);
 	}
-	//-------------------------------------------------------------------------------------------------------------------------------
-	@GetMapping(value = "/getStockByCompanyCode/{companyCode}")															// 4. WORKING
+	
+	@GetMapping(value = "/StockInfoByCompanyCode/{companyCode}")															
 	public ResponseEntity<List<StockPriceDetailsDTO>> getStockByCompanyCode(@PathVariable Long companyCode) {
         if(stockMarketService.getStockByCode(companyCode)==null)
         {
-            throw new InvalidStockException("Custom Error: No Stocks found for the company code"+companyCode);
+            throw new InvalidStockException(" No Stocks found for the company code"+companyCode);
         }
 		return new ResponseEntity<List<StockPriceDetailsDTO>>(stockMarketService.getStockByCode(companyCode),HttpStatus.OK);
 	}
-	//-------------------------------------------------------------------------------------------------------------------------------
-	@GetMapping(value = "/getStockPriceIndex/{companyCode}/{startDate}/{endDate}")										// 5. WORKING
+	
+	@GetMapping(value = "/StockPriceIndexValue/{companyCode}/{startDate}/{endDate}")										
 	public ResponseEntity<StockPriceIndexDTO> displayStockPriceIndex(@PathVariable Long companyCode, @PathVariable Date startDate, @PathVariable Date endDate) {
         
        LocalDate start= Instant.ofEpochMilli(startDate.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
@@ -86,16 +83,14 @@ public class StockPriceController {
         return new ResponseEntity<StockPriceIndexDTO>(stockMarketService.getStockPriceIndex(companyCode, start, end),HttpStatus.OK);
 	}
 	
-	//===============================================================================================================================
-	//			UTITLITY EXCEPTION HANDLERS - 2
-	//===============================================================================================================================
+	
 	@ExceptionHandler(InvalidStockException.class)
 	public ResponseEntity<InvalidStockExceptionResponse> companyHandler(InvalidStockException ex) {
 		InvalidStockExceptionResponse resp = new InvalidStockExceptionResponse(ex.getMessage(),System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value());
 		ResponseEntity<InvalidStockExceptionResponse> response =	new ResponseEntity<InvalidStockExceptionResponse>(resp, HttpStatus.BAD_REQUEST);
 		return response;
 	}
-	//------------------------------------------------------------------------------------------------
+	
 	@ExceptionHandler(StockNotFoundException.class)
 	public ResponseEntity<InvalidStockExceptionResponse> companyHandler(StockNotFoundException ex) {
 		InvalidStockExceptionResponse resp = new InvalidStockExceptionResponse(ex.getMessage(),System.currentTimeMillis(), HttpStatus.NOT_FOUND.value());

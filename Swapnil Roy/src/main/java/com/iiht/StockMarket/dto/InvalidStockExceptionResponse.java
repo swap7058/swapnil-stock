@@ -9,7 +9,6 @@ public class InvalidStockExceptionResponse {
 	//---------------------------------------------------------------------------------------------------------------------------------
 	public InvalidStockExceptionResponse() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public InvalidStockExceptionResponse(String message, long timeStamp, int status) {
 		super();
